@@ -523,6 +523,7 @@ export function VoiceStudio() {
   const recognitionRef = useRef<BoloSpeechRecognition | null>(null);
   const keepListeningRef = useRef(false);
   const committedTranscriptRef = useRef("");
+  const interimTranscriptRef = useRef("");
   const restartTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const feedbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -609,34 +610,33 @@ export function VoiceStudio() {
     [],
   );
 
-  const stopListening = useCallback(
-    (commitInterim = true) => {
-      keepListeningRef.current = false;
-      if (restartTimerRef.current) {
-        clearTimeout(restartTimerRef.current);
-        restartTimerRef.current = null;
-      }
+  const stopListening = useCallback((commitInterim = true) => {
+    keepListeningRef.current = false;
+    if (restartTimerRef.current) {
+      clearTimeout(restartTimerRef.current);
+      restartTimerRef.current = null;
+    }
 
-      if (commitInterim && interimTranscript.trim()) {
-        const combined = [committedTranscriptRef.current, interimTranscript.trim()]
-          .filter(Boolean)
-          .join(" ");
-        committedTranscriptRef.current = combined;
-        setTranscript(combined);
-      }
+    const currentInterim = interimTranscriptRef.current.trim();
+    if (commitInterim && currentInterim) {
+      const combined = [committedTranscriptRef.current, currentInterim]
+        .filter(Boolean)
+        .join(" ");
+      committedTranscriptRef.current = combined;
+      setTranscript(combined);
+    }
 
-      setInterimTranscript("");
-      setIsListening(false);
-      setStatus("idle");
+    interimTranscriptRef.current = "";
+    setInterimTranscript("");
+    setIsListening(false);
+    setStatus("idle");
 
-      try {
-        recognitionRef.current?.stop();
-      } catch {
-        recognitionRef.current?.abort();
-      }
-    },
-    [interimTranscript],
-  );
+    try {
+      recognitionRef.current?.stop();
+    } catch {
+      recognitionRef.current?.abort();
+    }
+  }, []);
 
   const startListening = useCallback(() => {
     if (typeof window === "undefined") {
@@ -655,6 +655,7 @@ export function VoiceStudio() {
 
     stopSpeaking();
     committedTranscriptRef.current = transcript.trim();
+    interimTranscriptRef.current = "";
     setInterimTranscript("");
     keepListeningRef.current = true;
 
@@ -686,15 +687,19 @@ export function VoiceStudio() {
         }
       }
 
-      if (finalChunk.trim()) {
-        const combined = [committedTranscriptRef.current, finalChunk.trim()]
+      const finalText = finalChunk.trim();
+      const interimText = interimChunk.trim();
+
+      if (finalText) {
+        const combined = [committedTranscriptRef.current, finalText]
           .filter(Boolean)
           .join(" ");
         committedTranscriptRef.current = combined;
         setTranscript(combined);
       }
 
-      setInterimTranscript(interimChunk.trim());
+      interimTranscriptRef.current = interimText;
+      setInterimTranscript(interimText);
     };
 
     recognition.onerror = (event) => {
@@ -837,6 +842,7 @@ export function VoiceStudio() {
       }
       stopSpeaking();
       committedTranscriptRef.current = clipboardText;
+      interimTranscriptRef.current = "";
       setTranscript(clipboardText);
       setInterimTranscript("");
       setStatus("idle");
@@ -913,6 +919,7 @@ export function VoiceStudio() {
     stopListening(false);
     stopSpeaking();
     committedTranscriptRef.current = "";
+    interimTranscriptRef.current = "";
     setTranscript("");
     setInterimTranscript("");
     setStatus("idle");
