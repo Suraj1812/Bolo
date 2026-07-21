@@ -16,11 +16,39 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Bolo — Speak. Listen. Share.",
+  title: "Bolo — Voice to Text",
   description:
-    "A simple, accessible voice-to-text app that helps everyone communicate with confidence.",
+    "Speak naturally, listen back, and copy your words with Bolo, an accessible voice-to-text app designed for simple communication.",
   applicationName: "Bolo",
+  keywords: [
+    "voice to text",
+    "speech to text",
+    "accessible communication",
+    "voice typing",
+    "text to speech",
+  ],
+  category: "accessibility",
+  creator: "Bolo",
+  publisher: "Bolo",
   manifest: "/manifest.webmanifest",
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    siteName: "Bolo",
+    title: "Bolo — Voice to Text",
+    description:
+      "Speak naturally, listen back, and copy your words with one simple, accessible app.",
+  },
+  twitter: {
+    card: "summary",
+    title: "Bolo — Voice to Text",
+    description:
+      "Speak naturally, listen back, and copy your words with one simple, accessible app.",
+  },
   formatDetection: {
     telephone: false,
   },
@@ -40,11 +68,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   viewportFit: "cover",
-  colorScheme: "light dark",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f5f7ff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b0d14" },
-  ],
+  colorScheme: "light",
+  themeColor: "#f5f7ff",
 };
 
 export default function RootLayout({
@@ -55,7 +80,6 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full`}
     >
       <body className="min-h-full antialiased">

@@ -2,7 +2,21 @@ const CACHE_NAME = "bolo-shell-v1";
 const APP_SHELL = ["/", "/bolo-icon.svg"];
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));
+  event.waitUntil(
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+      const shellResponse = await fetch("/", { cache: "no-cache" });
+      await cache.put("/", shellResponse.clone());
+
+      const markup = await shellResponse.text();
+      const staticAssets = Array.from(
+        markup.matchAll(/(?:src|href)="([^"]+)"/g),
+        (match) => match[1],
+      ).filter((url) => url.startsWith("/_next/static/"));
+
+      await cache.addAll([...new Set([...APP_SHELL.slice(1), ...staticAssets])]);
+    })(),
+  );
   self.skipWaiting();
 });
 
