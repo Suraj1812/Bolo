@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Bolo microphone">
+  <defs>
+    <linearGradient id="a" x1="72" y1="52" x2="442" y2="464" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7C74FF"/>
+      <stop offset="1" stop-color="#4C46E5"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="url(#a)"/>
+  <rect x="194" y="106" width="124" height="222" rx="62" fill="white"/>
+  <path d="M145 257c0 61.3 49.7 111 111 111s111-49.7 111-111" fill="none" stroke="white" stroke-width="30" stroke-linecap="round"/>
+  <path d="M256 368v53M204 421h104" fill="none" stroke="white" stroke-width="30" stroke-linecap="round"/>
+</svg>
