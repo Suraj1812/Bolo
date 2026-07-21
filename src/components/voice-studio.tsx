@@ -14,6 +14,7 @@ import {
   AudioLines,
   Check,
   ChevronDown,
+  ClipboardPaste,
   Copy,
   Globe2,
   Mic,
@@ -103,14 +104,19 @@ interface UiStrings {
   readAloud: string;
   stopReading: string;
   buttonListen: string;
+  buttonPaste: string;
   buttonCopy: string;
   buttonClear: string;
+  pasteText: string;
   copyText: string;
   clearText: string;
   microphonePermission: string;
   listenUnavailable: string;
   copyFailed: string;
   copied: string;
+  pasted: string;
+  pasteFailed: string;
+  emptyClipboard: string;
   cleared: string;
   noText: string;
   unavailable: string;
@@ -133,16 +139,21 @@ const UI_STRINGS: Record<string, UiStrings> = {
     readAloud: "Read text aloud",
     stopReading: "Stop reading text aloud",
     buttonListen: "LISTEN",
+    buttonPaste: "PASTE",
     buttonCopy: "COPY",
     buttonClear: "CLEAR",
+    pasteText: "Paste copied text",
     copyText: "Copy recognized text",
     clearText: "Clear all recognized text",
     microphonePermission: "Microphone permission is needed",
     listenUnavailable: "Listen back is unavailable",
     copyFailed: "Copy failed",
     copied: "Copied",
+    pasted: "Pasted",
+    pasteFailed: "Paste failed",
+    emptyClipboard: "Clipboard is empty",
     cleared: "Cleared",
-    noText: "Speak first",
+    noText: "Speak or paste first",
     unavailable: "Voice input is unavailable",
   },
   hi: {
@@ -161,16 +172,21 @@ const UI_STRINGS: Record<string, UiStrings> = {
     readAloud: "लिखा हुआ सुनें",
     stopReading: "सुनाना बंद करें",
     buttonListen: "सुनें",
+    buttonPaste: "पेस्ट",
     buttonCopy: "कॉपी",
     buttonClear: "साफ़",
+    pasteText: "कॉपी किया हुआ पेस्ट करें",
     copyText: "लिखा हुआ कॉपी करें",
     clearText: "सब मिटाएँ",
     microphonePermission: "माइक्रोफ़ोन की अनुमति चाहिए",
     listenUnavailable: "सुनाने की सुविधा उपलब्ध नहीं है",
     copyFailed: "कॉपी नहीं हुआ",
     copied: "कॉपी हो गया",
+    pasted: "पेस्ट हो गया",
+    pasteFailed: "पेस्ट नहीं हुआ",
+    emptyClipboard: "क्लिपबोर्ड खाली है",
     cleared: "साफ़ हो गया",
-    noText: "पहले बोलिए",
+    noText: "पहले बोलिए या पेस्ट करें",
     unavailable: "आवाज़ की सुविधा उपलब्ध नहीं है",
   },
   bn: {
@@ -189,16 +205,21 @@ const UI_STRINGS: Record<string, UiStrings> = {
     readAloud: "লেখা শুনুন",
     stopReading: "পড়া বন্ধ করুন",
     buttonListen: "শুনুন",
+    buttonPaste: "পেস্ট",
     buttonCopy: "কপি",
     buttonClear: "মুছুন",
+    pasteText: "কপি করা লেখা পেস্ট করুন",
     copyText: "লেখা কপি করুন",
     clearText: "সব মুছুন",
     microphonePermission: "মাইক্রোফোনের অনুমতি প্রয়োজন",
     listenUnavailable: "শোনানোর সুবিধা পাওয়া যাচ্ছে না",
     copyFailed: "কপি করা যায়নি",
     copied: "কপি হয়েছে",
+    pasted: "পেস্ট হয়েছে",
+    pasteFailed: "পেস্ট করা যায়নি",
+    emptyClipboard: "ক্লিপবোর্ড খালি",
     cleared: "মুছে ফেলা হয়েছে",
-    noText: "আগে বলুন",
+    noText: "আগে বলুন বা পেস্ট করুন",
     unavailable: "ভয়েস ইনপুট পাওয়া যাচ্ছে না",
   },
   ta: {
@@ -217,16 +238,21 @@ const UI_STRINGS: Record<string, UiStrings> = {
     readAloud: "எழுத்தை வாசி",
     stopReading: "வாசிப்பதை நிறுத்து",
     buttonListen: "கேளுங்கள்",
+    buttonPaste: "ஒட்டு",
     buttonCopy: "நகலெடு",
     buttonClear: "அழி",
+    pasteText: "நகலெடுத்த எழுத்தை ஒட்டவும்",
     copyText: "எழுத்தை நகலெடு",
     clearText: "அனைத்தையும் அழி",
     microphonePermission: "மைக்ரோஃபோன் அனுமதி தேவை",
     listenUnavailable: "வாசிக்கும் வசதி இல்லை",
     copyFailed: "நகலெடுக்க முடியவில்லை",
     copied: "நகலெடுக்கப்பட்டது",
+    pasted: "ஒட்டப்பட்டது",
+    pasteFailed: "ஒட்ட முடியவில்லை",
+    emptyClipboard: "கிளிப்போர்டு காலியாக உள்ளது",
     cleared: "அழிக்கப்பட்டது",
-    noText: "முதலில் பேசுங்கள்",
+    noText: "முதலில் பேசுங்கள் அல்லது ஒட்டுங்கள்",
     unavailable: "குரல் உள்ளீடு கிடைக்கவில்லை",
   },
   te: {
@@ -245,16 +271,21 @@ const UI_STRINGS: Record<string, UiStrings> = {
     readAloud: "వచనాన్ని వినండి",
     stopReading: "చదవడం ఆపండి",
     buttonListen: "వినండి",
+    buttonPaste: "అతికించు",
     buttonCopy: "కాపీ",
     buttonClear: "తొలగించు",
+    pasteText: "కాపీ చేసిన వచనాన్ని అతికించండి",
     copyText: "వచనాన్ని కాపీ చేయండి",
     clearText: "అన్నీ తొలగించండి",
     microphonePermission: "మైక్రోఫోన్ అనుమతి అవసరం",
     listenUnavailable: "వినిపించే సౌకర్యం అందుబాటులో లేదు",
     copyFailed: "కాపీ కాలేదు",
     copied: "కాపీ అయింది",
+    pasted: "అతికించబడింది",
+    pasteFailed: "అతికించలేకపోయాం",
+    emptyClipboard: "క్లిప్‌బోర్డ్ ఖాళీగా ఉంది",
     cleared: "తొలగించబడింది",
-    noText: "ముందు మాట్లాడండి",
+    noText: "ముందు మాట్లాడండి లేదా అతికించండి",
     unavailable: "వాయిస్ ఇన్‌పుట్ అందుబాటులో లేదు",
   },
   mr: {
@@ -273,21 +304,97 @@ const UI_STRINGS: Record<string, UiStrings> = {
     readAloud: "मजकूर ऐका",
     stopReading: "वाचणे थांबवा",
     buttonListen: "ऐका",
+    buttonPaste: "पेस्ट",
     buttonCopy: "कॉपी",
     buttonClear: "पुसा",
+    pasteText: "कॉपी केलेला मजकूर पेस्ट करा",
     copyText: "मजकूर कॉपी करा",
     clearText: "सगळे पुसा",
     microphonePermission: "मायक्रोफोनची परवानगी आवश्यक आहे",
     listenUnavailable: "ऐकवण्याची सुविधा उपलब्ध नाही",
     copyFailed: "कॉपी झाले नाही",
     copied: "कॉपी झाले",
+    pasted: "पेस्ट झाले",
+    pasteFailed: "पेस्ट झाले नाही",
+    emptyClipboard: "क्लिपबोर्ड रिकामा आहे",
     cleared: "साफ झाले",
-    noText: "आधी बोला",
+    noText: "आधी बोला किंवा पेस्ट करा",
     unavailable: "व्हॉइस इनपुट उपलब्ध नाही",
   },
 };
 
 type VoiceStatus = "idle" | "listening" | "speaking" | "error";
+
+const SCRIPT_LOCALES = [
+  { pattern: /[\u3040-\u30ff]/u, locale: "ja-JP" },
+  { pattern: /[\uac00-\ud7af]/u, locale: "ko-KR" },
+  { pattern: /[\u0980-\u09ff]/u, locale: "bn-IN" },
+  { pattern: /[\u0b80-\u0bff]/u, locale: "ta-IN" },
+  { pattern: /[\u0c00-\u0c7f]/u, locale: "te-IN" },
+  { pattern: /[\u0900-\u097f]/u, locale: "hi-IN" },
+  { pattern: /[\u0a80-\u0aff]/u, locale: "gu-IN" },
+  { pattern: /[\u0a00-\u0a7f]/u, locale: "pa-IN" },
+  { pattern: /[\u0c80-\u0cff]/u, locale: "kn-IN" },
+  { pattern: /[\u0d00-\u0d7f]/u, locale: "ml-IN" },
+  { pattern: /[\u0d80-\u0dff]/u, locale: "si-LK" },
+  { pattern: /[\u0e00-\u0e7f]/u, locale: "th-TH" },
+  { pattern: /[\u0590-\u05ff]/u, locale: "he-IL" },
+  { pattern: /[\u0370-\u03ff]/u, locale: "el-GR" },
+  { pattern: /[\u0400-\u04ff]/u, locale: "ru-RU" },
+  { pattern: /[\u4e00-\u9fff]/u, locale: "zh-CN" },
+] as const;
+
+function detectTextLocale(text: string, fallbackLocale = "en-IN") {
+  const normalizedText = text.trim();
+
+  if (!normalizedText) {
+    return fallbackLocale;
+  }
+
+  const scriptMatch = SCRIPT_LOCALES.find(({ pattern }) =>
+    pattern.test(normalizedText),
+  );
+  if (scriptMatch) {
+    return scriptMatch.locale;
+  }
+
+  if (/[\u0600-\u06ff]/u.test(normalizedText)) {
+    return /[\u0679\u0688\u0691\u06ba\u06be\u06c1\u06d2]/u.test(normalizedText)
+      ? "ur-PK"
+      : "ar-SA";
+  }
+
+  const latinText = normalizedText.toLowerCase();
+  if (/[¿¡ñ]/u.test(latinText) || /\b(hola|gracias|que|una|los|las)\b/u.test(latinText)) {
+    return "es-ES";
+  }
+  if (/[àâçéèêëîïôùûüÿœ]/u.test(latinText) || /\b(bonjour|merci|avec|pour|une|les)\b/u.test(latinText)) {
+    return "fr-FR";
+  }
+  if (/[äöüß]/u.test(latinText) || /\b(hallo|danke|und|der|die|das)\b/u.test(latinText)) {
+    return "de-DE";
+  }
+  if (/[ãõ]/u.test(latinText) || /\b(obrigado|obrigada|você|uma)\b/u.test(latinText)) {
+    return "pt-BR";
+  }
+  if (/\b(ciao|grazie|buongiorno|della|sono)\b/u.test(latinText)) {
+    return "it-IT";
+  }
+
+  return "en-IN";
+}
+
+function findMatchingVoice(voices: SpeechSynthesisVoice[], locale: string) {
+  const normalizedLocale = locale.toLowerCase();
+  const languageCode = normalizedLocale.split("-")[0];
+
+  return (
+    voices.find((voice) => voice.lang.toLowerCase() === normalizedLocale) ??
+    voices.find((voice) =>
+      voice.lang.toLowerCase().startsWith(`${languageCode}-`),
+    )
+  );
+}
 
 const STORAGE_KEY = "bolo:voice-state:v1";
 
@@ -351,12 +458,14 @@ function ActionButton({
   ariaLabel: string;
   disabled?: boolean;
   onClick: () => void;
-  tone: "violet" | "blue" | "rose";
+  tone: "violet" | "emerald" | "blue" | "rose";
   reduceMotion: boolean | null;
 }) {
   const toneClasses = {
     violet:
       "hover:border-violet-400 hover:bg-violet-50 dark:hover:border-violet-500/40 dark:hover:bg-violet-500/10",
+    emerald:
+      "hover:border-emerald-400 hover:bg-emerald-50 dark:hover:border-emerald-500/40 dark:hover:bg-emerald-500/10",
     blue: "hover:border-sky-400 hover:bg-sky-50 dark:hover:border-sky-500/40 dark:hover:bg-sky-500/10",
     rose: "hover:border-rose-400 hover:bg-rose-50 dark:hover:border-rose-500/40 dark:hover:bg-rose-500/10",
   }[tone];
@@ -408,6 +517,7 @@ export function VoiceStudio() {
     typeof navigator === "undefined" ? "en-IN" : navigator.language || "en-IN",
   );
   const [copyComplete, setCopyComplete] = useState(false);
+  const [pasteComplete, setPasteComplete] = useState(false);
   const [clearComplete, setClearComplete] = useState(false);
 
   const recognitionRef = useRef<BoloSpeechRecognition | null>(null);
@@ -453,6 +563,14 @@ export function VoiceStudio() {
     isSupported === false ? ui.voiceUnavailable : statusLabel;
 
   const hasText = Boolean((displayedTranscript + interimTranscript).trim());
+  const textLocale = useMemo(
+    () =>
+      detectTextLocale(
+        [displayedTranscript, interimTranscript].filter(Boolean).join(" "),
+        effectiveDeviceLanguage,
+      ),
+    [displayedTranscript, effectiveDeviceLanguage, interimTranscript],
+  );
 
   const stopSpeaking = useCallback(() => {
     if (typeof window !== "undefined" && "speechSynthesis" in window) {
@@ -659,16 +777,14 @@ export function VoiceStudio() {
       stopListening();
     }
 
+    const speechLocale = detectTextLocale(text, effectiveDeviceLanguage);
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = resolvedLocale;
+    utterance.lang = speechLocale;
     utterance.rate = 0.92;
     utterance.pitch = 1;
 
     const voices = window.speechSynthesis.getVoices();
-    const languageCode = resolvedLocale.toLowerCase().split("-")[0];
-    const matchingVoice = voices.find((voice) =>
-      voice.lang.toLowerCase().startsWith(languageCode),
-    );
+    const matchingVoice = findMatchingVoice(voices, speechLocale);
     if (matchingVoice) {
       utterance.voice = matchingVoice;
     }
@@ -692,14 +808,56 @@ export function VoiceStudio() {
     window.speechSynthesis.speak(utterance);
   }, [
     interimTranscript,
+    effectiveDeviceLanguage,
     isListening,
     isSpeaking,
-    resolvedLocale,
     speakShortFeedback,
     stopListening,
     stopSpeaking,
     transcript,
     ui,
+  ]);
+
+  const pasteText = useCallback(async () => {
+    try {
+      if (!navigator.clipboard?.readText) {
+        throw new Error("Clipboard reading is unavailable");
+      }
+
+      const clipboardText = (await navigator.clipboard.readText()).trim();
+      if (!clipboardText) {
+        toast(ui.emptyClipboard, { icon: <ClipboardPaste className="size-4" /> });
+        speakShortFeedback(ui.emptyClipboard);
+        vibrate([18, 25, 18]);
+        return;
+      }
+
+      if (isListening) {
+        stopListening(false);
+      }
+      stopSpeaking();
+      committedTranscriptRef.current = clipboardText;
+      setTranscript(clipboardText);
+      setInterimTranscript("");
+      setStatus("idle");
+      showMomentaryState(setPasteComplete);
+      toast.success(ui.pasted, { icon: <Check className="size-4" /> });
+      speakShortFeedback(ui.pasted);
+      vibrate([12, 30, 18]);
+    } catch {
+      toast.error(ui.pasteFailed);
+      speakShortFeedback(ui.pasteFailed);
+      vibrate([30, 35, 30]);
+    }
+  }, [
+    isListening,
+    showMomentaryState,
+    speakShortFeedback,
+    stopListening,
+    stopSpeaking,
+    ui.emptyClipboard,
+    ui.pasteFailed,
+    ui.pasted,
   ]);
 
   const copyText = useCallback(async () => {
@@ -881,7 +1039,8 @@ export function VoiceStudio() {
                   className="max-h-[190px] w-full overflow-y-auto overscroll-contain px-1 py-1 sm:max-h-[220px]"
                   aria-live="polite"
                   aria-atomic="false"
-                  lang={resolvedLocale}
+                  lang={textLocale}
+                  dir="auto"
                 >
                   <p className="text-center text-[1.55rem] font-medium leading-[1.48] tracking-[-0.025em] text-balance sm:text-[1.85rem] lg:text-[2.05rem]">
                     <span>{displayedTranscript}</span>
@@ -1022,7 +1181,7 @@ export function VoiceStudio() {
         </section>
 
         <section
-          className="grid w-full max-w-[620px] grid-cols-3 gap-2.5 sm:gap-4"
+          className="grid w-full max-w-[760px] grid-cols-4 gap-2 sm:gap-4"
           aria-label={ui.textActions}
         >
           <ActionButton
@@ -1032,6 +1191,25 @@ export function VoiceStudio() {
             disabled={!hasText}
             onClick={listenBack}
             tone="violet"
+            reduceMotion={reduceMotion}
+          />
+          <ActionButton
+            icon={ClipboardPaste}
+            label={ui.buttonPaste}
+            activeIcon={
+              pasteComplete ? (
+                <motion.span
+                  initial={reduceMotion ? false : { scale: 0.5 }}
+                  animate={{ scale: 1 }}
+                  className="grid size-8 place-items-center rounded-full bg-emerald-500 text-white"
+                >
+                  <Check className="size-5" strokeWidth={2.5} />
+                </motion.span>
+              ) : undefined
+            }
+            ariaLabel={ui.pasteText}
+            onClick={pasteText}
+            tone="emerald"
             reduceMotion={reduceMotion}
           />
           <ActionButton
